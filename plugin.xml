@@ -2,14 +2,14 @@
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    id="com.wodify.cordova.plugin.file-picker"
+    id="com.apreta.file-picker"
     version="0.0.1">
 
     <name>Cordova-Plugin-File-Picker</name>
 
     <description>Cordova plugin for picking files.</description>
 
-    <repo>https://github.com/elizabethrego/cordova-plugin-instabug</repo>
+    <repo>https://github.com/Apreta/cordova-plugin-filepicker</repo>
 
     <keyword>file picker, files, document picker</keyword>
 
