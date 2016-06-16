@@ -11,7 +11,7 @@ It's only available for iOS 8
 Installation:
 ============
 
-cordova plugin add https://github.com/jcesarmobile/FilePicker-Phonegap-iOS-Plugin.git
+cordova plugin add https://github.com/<this repo>
 
 
 Usage:
@@ -42,6 +42,14 @@ errorCallback will bring an error message as string
 
 
 See all the available UTIs https://developer.apple.com/library/ios/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html
+
+Other options:
+```
+window.FilePicker.pickFile(successCallback,errorCallback,"public.data",returnWithDetail,frame);
+```
+
+If returnWithDetail is true a base 64 string representation of the file contents will be returned.
+frame can contain an array with position for picker: [x,y,width,height]
 
 Prerequisites
 =============

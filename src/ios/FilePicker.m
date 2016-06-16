@@ -51,8 +51,43 @@
 
     // To return with detail means to return the base 64 string representation
     // of the file rather than its URL, along with it's name and file type
-    self.returnWithDetail = [[command.arguments objectAtIndex:1] boolValue];
+    if (command.arguments.count > 1)
+        self.returnWithDetail = [[command.arguments objectAtIndex:1] boolValue];
+    else
+        self.returnWithDetail = false;
     
+    CGRect frame = CGRectZero;
+    //default values
+    NSInteger x = 280;
+    NSInteger y = 360;
+    NSInteger width = 55;
+    NSInteger height = 20;
+
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        if(command.arguments.count > 2) {
+            NSArray *frameValues = [command.arguments objectAtIndex:2];
+            frameValues = [frameValues isEqual:[NSNull null]]?nil:frameValues;
+            if (frameValues.count == 4 ) {
+                frame.origin.x   = [frameValues[0] integerValue];
+                frame.origin.y   = [frameValues[1] integerValue];
+                frame.size.width = [frameValues[2] integerValue];
+                frame.size.height= [frameValues[3] integerValue];
+            } else {
+                // default values for iPad
+                frame.origin.x = x;
+                frame.origin.y = y;
+                frame.size.width = width;
+                frame.size.height = height;
+            }
+        } else {
+            // default values for iPad
+            frame.origin.x = x;
+            frame.origin.y = y;
+            frame.size.width = width;
+            frame.size.height = height;
+        }
+    }
+
     BOOL supported = YES;
     
     NSArray* UTIsArray = nil;
@@ -76,7 +111,7 @@
     if (supported) {
         self.pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_NO_RESULT];
         [self.pluginResult setKeepCallbackAsBool:YES];
-        [self displayDocumentPicker:UTIsArray];
+        [self displayDocumentPicker:UTIsArray withSenderRect:frame];
     } else {
         [self.commandDelegate sendPluginResult:[CDVPluginResult
                                                 resultWithStatus:CDVCommandStatus_ERROR
@@ -150,10 +185,14 @@
  *        Array of Uniform Type Identifiers specifying
  *        types that are allowed to be picked
  */
-- (void)displayDocumentPicker:(NSArray*)UTIs {
+- (void)displayDocumentPicker:(NSArray*)UTIs withSenderRect:(CGRect)senderFrame{
     UIDocumentMenuViewController *importMenu = [[UIDocumentMenuViewController alloc] initWithDocumentTypes:UTIs inMode:UIDocumentPickerModeImport];
     importMenu.delegate = self;
     importMenu.popoverPresentationController.sourceView = self.viewController.view;
+    if (!CGRectEqualToRect(senderFrame, CGRectZero)) {
+        importMenu.popoverPresentationController.sourceRect = senderFrame;
+    }
+    importMenu.popoverPresentationController.permittedArrowDirections = 4;
     [self.viewController presentViewController:importMenu animated:YES completion:nil];
 }
 
